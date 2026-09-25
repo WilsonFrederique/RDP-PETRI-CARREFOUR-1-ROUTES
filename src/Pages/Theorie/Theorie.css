@@ -1,0 +1,28 @@
+.theorie-page { display: flex; flex-direction: column; gap: 1.1rem; max-width: 100%; }
+
+.theorie-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.4rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.theorie-card h3 { font-family: "Sora", sans-serif; font-size: 1rem; margin-bottom: 0.6rem; color: var(--ink); }
+.theorie-card p { color: var(--ink-soft); line-height: 1.65; font-size: 0.92rem; }
+.theorie-card ul { margin: 0.4rem 0 0.8rem 1.1rem; color: var(--ink-soft); font-size: 0.92rem; line-height: 1.8; }
+
+code {
+  font-family: "JetBrains Mono", monospace;
+  background: var(--bg);
+  padding: 0.1rem 0.4rem;
+  border-radius: 5px;
+  font-size: 0.85em;
+}
+
+.theorie-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+@media (max-width: 700px) { .theorie-grid { grid-template-columns: 1fr; } }
+
+.theorie-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.theorie-table td { padding: 0.4rem 0.3rem; border-bottom: 1px solid var(--line); color: var(--ink); }
+.theorie-table td.mono { font-family: "JetBrains Mono", monospace; color: var(--ink-soft); width: 45%; }

@@ -1,0 +1,12 @@
+.sim-page { display: flex; flex-direction: column; gap: 1.1rem; }
+
+.sim-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 1.1rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .sim-grid { grid-template-columns: 1fr; }
+}

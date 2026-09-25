@@ -1,0 +1,180 @@
+.road-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.road-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.1rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.road-head h4 { font-family: "Sora", sans-serif; font-size: 0.9rem; color: var(--ink); }
+.road-badge {
+  font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 20px;
+  background: var(--teal-soft); color: #17a08f; white-space: nowrap;
+}
+
+/* ---- Scène : trottoir / route double-sens / trottoir ---- */
+.road-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  background: #eef2f5;
+}
+@media (max-width: 520px) {
+  .road-stage { aspect-ratio: 4 / 5; }
+}
+
+.sidewalk {
+  position: relative;
+  flex: 0 0 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.4rem, 2vw, 0.9rem);
+  background: #dde3e8;
+}
+.sidewalk-top { border-bottom: 3px dashed #b9c2ca; flex-direction: column-reverse; }
+.sidewalk-bottom { border-top: 3px dashed #b9c2ca; flex-direction: column; }
+
+.road-strip {
+  position: relative;
+  flex: 1;
+  background: #33404d;
+  overflow: hidden;
+}
+
+.lane { position: absolute; left: 0; right: 0; height: 50%; }
+.lane-a { top: 0; }
+.lane-b { top: 50%; }
+
+.lane-divider {
+  position: absolute; top: calc(50% - 1px); left: 0; right: 0; height: 2px; z-index: 1;
+  background: repeating-linear-gradient(90deg, #eab308 0 14px, transparent 14px 26px);
+}
+
+/* Passage piétons : la route est horizontale, donc les bandes peintes sont
+   elles aussi horizontales (des rectangles allongés dans le sens de la
+   route, empilés dans le sens de la traversée) — c'est le tracé réel d'un
+   passage clouté, pas une bande verticale. */
+.crosswalk {
+  position: absolute; top: 0; bottom: 0; left: 41%; width: 18%; z-index: 2;
+  background: repeating-linear-gradient(180deg, #fff 0 10px, transparent 10px 24px);
+}
+
+/* ---- Feux véhicules : un poteau de chaque côté du passage, même état ---- */
+.light-pole { position: absolute; z-index: 5; }
+.pole-left { top: 6px; left: 6px; }
+.pole-right { bottom: 6px; right: 6px; }
+
+.traffic-light {
+  display: flex; flex-direction: column; gap: 3px; padding: 4px; border-radius: 8px;
+  background: #1c2333; box-shadow: 0 3px 10px rgba(15, 27, 36, 0.35);
+}
+.bulb {
+  display: block;
+  width: clamp(9px, 2.4vw, 13px); height: clamp(9px, 2.4vw, 13px); border-radius: 50%;
+  background: #3a4552; opacity: 0.45; transition: all 0.25s ease;
+}
+.bulb.on { opacity: 1; box-shadow: 0 0 8px currentColor; }
+.bulb.red.on { background: var(--red); color: var(--red); }
+.bulb.yellow.on { background: var(--yellow); color: var(--yellow); }
+.bulb.green.on { background: var(--green); color: var(--green); }
+
+/* ---- Feux piétons ---- */
+.ped-light {
+  display: flex; gap: 4px; padding: 3px 5px; border-radius: 8px;
+  background: #1c2333; box-shadow: 0 3px 10px rgba(15, 27, 36, 0.3);
+}
+.ped-bulb {
+  display: flex; align-items: center; justify-content: center;
+  width: clamp(14px, 3.4vw, 20px); height: clamp(14px, 3.4vw, 20px);
+  border-radius: 5px; font-size: clamp(9px, 2.4vw, 12px); line-height: 1;
+  background: #2b3542; opacity: 0.35; transition: all 0.25s ease;
+}
+.ped-bulb.on { opacity: 1; }
+.ped-bulb.red.on { background: rgba(220, 38, 38, 0.22); box-shadow: 0 0 8px rgba(220, 38, 38, 0.5); }
+.ped-bulb.green.on { background: rgba(22, 163, 74, 0.22); box-shadow: 0 0 8px rgba(22, 163, 74, 0.5); }
+
+/* ---- Piétons : traversent réellement le passage, d'un trottoir à l'autre ----
+   Deux couches, comme pour une voiture qui roule tout en clignotant :
+   - .ped-track porte le vrai déplacement (transition sur "top", sur toute
+     la hauteur de la scène, du trottoir haut au trottoir bas ou l'inverse) ;
+   - .ped-figure ne fait que le cycle de marche (jambes qui se balancent)
+     pendant que .ped-track avance. Immobile (juste une légère respiration
+     d'attente) tant que ce n'est pas leur tour. */
+.ped-track {
+  position: absolute;
+  z-index: 6;
+  transition: top 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ped-from-top { left: 42%; top: 9%; }
+.ped-from-bottom { left: 58%; top: 91%; }
+.ped-from-top.walk { top: 91%; }
+.ped-from-bottom.walk { top: 9%; }
+
+.ped-figure {
+  position: absolute; top: 0; left: 0;
+  display: block;
+  font-size: clamp(0.9rem, 3vw, 1.3rem);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
+}
+.ped-track.wait .ped-figure { opacity: 0.6; animation: pedIdle 1.8s ease-in-out infinite; }
+.ped-track.walk .ped-figure { opacity: 1; animation: pedWalkStep 0.32s ease-in-out infinite; }
+
+@keyframes pedIdle {
+  0%, 100% { transform: translate(-50%, -50%); }
+  50% { transform: translate(-50%, -46%); }
+}
+@keyframes pedWalkStep {
+  0%, 100% { transform: translate(-58%, -50%) rotate(-10deg); }
+  50% { transform: translate(-42%, -56%) rotate(10deg); }
+}
+
+/* ---- Véhicules : une voiture par sens de circulation ---- */
+.car {
+  position: absolute; top: 22%; width: 9%; aspect-ratio: 2 / 1; border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.car-a { left: 2%; background: #1eb8a6; }
+.car-a.driving { animation: driveRight 2.4s linear infinite; }
+.car-a.stopped { animation: none; left: 32%; transition: left 0.7s ease; }
+@keyframes driveRight {
+  0% { left: 2%; opacity: 1; }
+  85% { left: 100%; opacity: 1; }
+  100% { left: 2%; opacity: 0; }
+}
+
+.car-b { right: 2%; background: #f5a623; }
+.car-b.driving { animation: driveLeft 2.4s linear infinite; }
+.car-b.stopped { animation: none; right: 32%; transition: right 0.7s ease; }
+@keyframes driveLeft {
+  0% { right: 2%; opacity: 1; }
+  85% { right: 100%; opacity: 1; }
+  100% { right: 2%; opacity: 0; }
+}
+
+/* ---- Légende ---- */
+.road-legend {
+  padding: 0.9rem 1.1rem; display: flex; flex-direction: column; gap: 0.45rem;
+  font-size: 0.78rem; background: var(--surface); color: var(--ink-soft);
+}
+.legend-row { display: flex; align-items: center; gap: 0.55rem; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 6px currentColor; flex-shrink: 0; }
+.dot-vert { background: var(--green); color: var(--green); }
+.dot-jaune { background: var(--yellow); color: var(--yellow); }
+.dot-rouge { background: var(--red); color: var(--red); }
+.dot-ped-vert { background: var(--green); color: var(--green); }
+.dot-ped-rouge { background: var(--red); color: var(--red); }

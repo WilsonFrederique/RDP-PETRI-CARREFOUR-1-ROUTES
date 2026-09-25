@@ -1,0 +1,55 @@
+.graph-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.graph-head {
+  display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 1.1rem; background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.graph-head h4 { font-family: "Sora", sans-serif; font-size: 0.88rem; color: var(--ink); }
+.graph-badge {
+  font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 20px;
+  background: var(--teal-soft); color: #17a08f; white-space: nowrap;
+}
+
+.graph-svg { width: 100%; height: auto; aspect-ratio: 600 / 470; display: block; }
+
+.arc { fill: none; stroke-width: 1.6; transition: all 0.3s ease; }
+.arc-veh { stroke: #94a3b8; }
+.arc-ped { stroke: #38bdf8; stroke-dasharray: 4 3; }
+.arc-active { stroke: #1eb8a6; stroke-width: 2.6; filter: drop-shadow(0 0 3px rgba(30, 184, 166, 0.55)); }
+
+.transition-rect { fill: #1c2333; transition: fill 0.3s ease, filter 0.3s ease; }
+.transition-rect.active { fill: #1eb8a6; filter: drop-shadow(0 0 6px rgba(30, 184, 166, 0.6)); }
+.transition-label { font-size: 9px; font-family: "Inter", sans-serif; fill: var(--ink); text-anchor: middle; font-weight: 700; }
+
+.place-node { stroke-width: 2; transition: all 0.3s ease; }
+.place-node.vert { fill: #dcfce7; stroke: var(--green); }
+.place-node.vert.marked { fill: var(--green); filter: drop-shadow(0 0 6px rgba(22, 163, 74, 0.6)); }
+.place-node.jaune { fill: #fef9c3; stroke: var(--yellow); }
+.place-node.jaune.marked { fill: var(--yellow); filter: drop-shadow(0 0 6px rgba(234, 179, 8, 0.6)); }
+.place-node.rouge { fill: #fee2e2; stroke: var(--red); }
+.place-node.rouge.marked { fill: var(--red); filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.6)); }
+.place-node.ped-go { fill: #e0f2fe; stroke: #38bdf8; }
+.place-node.ped-go.marked { fill: #38bdf8; filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6)); }
+.place-node.ped-wait { fill: #f1f5f9; stroke: #94a3b8; }
+.place-node.ped-wait.marked { fill: #94a3b8; filter: drop-shadow(0 0 6px rgba(148, 163, 184, 0.5)); }
+
+.place-token { fill: #fff; }
+.place-label { font-size: 9px; font-family: "Inter", sans-serif; fill: var(--ink-soft); text-anchor: middle; }
+
+.graph-legend {
+  display: flex; flex-wrap: wrap; gap: 0.7rem; padding: 0.7rem 1.1rem;
+  border-top: 1px solid var(--line); background: var(--bg); font-size: 0.72rem; color: var(--ink-soft);
+}
+.graph-legend span { display: flex; align-items: center; gap: 0.35rem; }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.dot.vert { background: var(--green); }
+.dot.jaune { background: var(--yellow); }
+.dot.rouge { background: var(--red); }
+.dot.ped-go { background: #38bdf8; }
+.dot.ped-wait { background: #94a3b8; }
